@@ -1,0 +1,21 @@
+@font-face {font-family: "svgtofont";
+  src: url('/assets/fonts/svgtofont/svgtofont.eot?t=1613902274969'); /* IE9*/
+  src: url('/assets/fonts/svgtofont/svgtofont.eot?t=1613902274969#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url("/assets/fonts/svgtofont/svgtofont.woff2?t=1613902274969") format("woff2"),
+  url("/assets/fonts/svgtofont/svgtofont.woff?t=1613902274969") format("woff"),
+  url('/assets/fonts/svgtofont/svgtofont.ttf?t=1613902274969') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('/assets/fonts/svgtofont/svgtofont.svg?t=1613902274969#svgtofont') format('svg'); /* iOS 4.1- */
+}
+
+[class^="svgtofont-"], [class*=" svgtofont-"] {
+  font-family: 'svgtofont' !important;
+  font-size: 16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.svgtofont-millebottes:before { content: "\ea01"; }
+
+$svgtofont-millebottes: "\ea01";
+
