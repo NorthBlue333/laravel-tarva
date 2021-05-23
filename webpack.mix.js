@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const mix = require('laravel-mix')
-const tailwindcss = require('tailwindcss')
 
 /*
  |--------------------------------------------------------------------------
@@ -7,20 +7,21 @@ const tailwindcss = require('tailwindcss')
  |--------------------------------------------------------------------------
  |
  | Mix provides a clean, fluent API for defining some Webpack build steps
- | for your Laravel application. By default, we are compiling the Sass
+ | for your Laravel applications. By default, we are compiling the CSS
  | file for the application as well as bundling up all the JS files.
  |
  */
 
-mix
-  .webpackConfig({
-    node: {
-      fs: 'empty',
-    },
-  })
-  .js('resources/js/admin.js', 'assets/js')
-  .js('resources/js/admin-alpine-editor.js', 'assets/js')
-  .sass('resources/sass/admin.scss', 'assets/css', {}, [
-    tailwindcss('./admin-tailwind.config.js'),
-  ])
-  .options({ processCssUrls: false })
+mix.setPublicPath('assets')
+    .webpackConfig({
+        output: {
+            publicPath: '/vendor/laravel-admin/',
+        },
+    })
+    .ts('resources/js/admin.ts', 'assets/js')
+    .options({
+        processCssUrls: true,
+    })
+    .vue()
+    .postCss('resources/css/admin.css', 'assets/css', [require('tailwindcss')])
+    .version()

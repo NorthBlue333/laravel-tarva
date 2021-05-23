@@ -2,6 +2,8 @@
 
 namespace LaravelAdmin;
 
+use LaravelAdmin\Resources\Resource;
+
 class Utils {
     public static function getResourceClasses(): array {
         $classes = [];
@@ -14,7 +16,7 @@ class Utils {
         return $classes;
     }
 
-    public static function findResource(string $uriKey) {
+    public static function findResource(string $uriKey): string {
         return collect(static::getResourceClasses())->first(fn ($class) => $class::uriKey() === $uriKey);
     }
 }

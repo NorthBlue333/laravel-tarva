@@ -11,6 +11,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
+use Inertia\Inertia;
 
 class AdminServiceProvider extends ServiceProvider
 {
@@ -40,7 +41,18 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::share('adminResourceClasses', Utils::getResourceClasses());
+        $adminResourceClasses = Utils::getResourceClasses();
+        View::share('adminResourceClasses', $adminResourceClasses);
+        Inertia::share('adminResourceClasses', collect($adminResourceClasses)->filter(fn ($class) => $class::$showInSidebar)->map(fn ($class) => [
+            'uriKey' => $class::uriKey(),
+            'singular' => $class::singular(),
+            'plural' => $class::plural(),
+            'icon' => $class::icon(),
+        ]));
+        Inertia::share('user',  fn (Request $request) => $request->user()
+        ? $request->user()->only('id', 'email')
+        : null);
+
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'courier');
 
         $this->app->bind(ResourceIndexRequest::class, function (Application $app) {

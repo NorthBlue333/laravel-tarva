@@ -9,6 +9,6 @@ class ResourceRequest extends Request implements ResourceRequestInterface {
     use IsResourceRequest;
 
     public static function componentType(): string {
-        return 'index';
+        return 'Index';
     }
 }

@@ -13,5 +13,10 @@ return [
         'folder' => app_path() . '/Admin/Resources/*.php',
         /** should match PSR4 */
         'namespace' => '\App\Admin\Resources\\'
+    ],
+    'auth' => [
+        'controller' => \App\Http\Controllers\Auth\LoginController::class,
+        'route' => 'laravel-admin::login',
+        'middleware' => \App\Http\Middleware\Authenticate::class,
     ]
 ];

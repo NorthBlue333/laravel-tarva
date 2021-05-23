@@ -86,15 +86,19 @@ class Resource
     }
 
     public function filterFieldsOn(string $attribute, $value) {
-        $this->fields = $this->fields
-            ->map(function ($field) use ($attribute, $value) {
-                if(!($field instanceof Panel)) return $field;
+        $this->fields = static::staticFilterFieldsOn($this->fields, $attribute, $value);
+    }
 
-                $field->filterFieldsOn($attribute, $value);
-                return $field;
-            })
-            ->filter(fn ($field) => $field instanceof Panel && $field->getFields()->count() ||
-                !($field instanceof Panel) && $field->{$attribute} === $value);
+    public static function staticFilterFieldsOn(FieldCollection $fields, string $attribute, $value) {
+        return $fields->map(function ($field) use ($attribute, $value) {
+            if(!($field instanceof Panel)) return $field;
+
+            $field->filterFieldsOn($attribute, $value);
+            return $field;
+        })
+        ->filter(fn ($field) => $field instanceof Panel && $field->getFields()->count() ||
+            !($field instanceof Panel) && $field->{$attribute} === $value);
+
     }
 
     /**

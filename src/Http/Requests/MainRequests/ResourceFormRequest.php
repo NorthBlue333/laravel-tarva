@@ -11,6 +11,6 @@ class ResourceFormRequest extends FormRequest implements ResourceRequestInterfac
     use IsResourceRequest, HasResourceValidation;
 
     public static function componentType(): string {
-        return 'form';
+        return 'Form';
     }
 }

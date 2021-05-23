@@ -10,6 +10,6 @@ class ResourceInstanceRequest extends ResourceRequest
     use IsResourceRequest, HasResourceInstance;
 
     public static function componentType(): string {
-        return 'view';
+        return 'View';
     }
 }

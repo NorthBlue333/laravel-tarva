@@ -1,12 +1,5 @@
 {
     "singleQuote": true,
-    "overrides": [
-        {
-            "files": "*.yml",
-            "options": {
-                "singleQuote": false
-            }
-        }
-    ],
-    "semi": false
+    "semi": false,
+    "vueIndentScriptAndStyle": true
 }

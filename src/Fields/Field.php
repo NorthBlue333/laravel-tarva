@@ -134,13 +134,15 @@ class Field
                 $this->componentType = $typeMapping[get_class($request)];
                 return;
             }
+
             if (array_key_exists('form', $typeMapping) &&
                 ($request instanceof ResourceUpdatingRequest || $request instanceof ResourceCreatingRequest)
             ) {
                 $this->componentType = $typeMapping['form'];
                 return;
             }
-            $this->componentType = $request::componentType();
+            $className = explode('\\', get_called_class());
+            $this->componentType = $request::componentType() . array_pop($className);
         };
         return $this;
     }
@@ -309,7 +311,8 @@ class Field
             call_user_func($this->componentTypeCallback, $request);
             return;
         }
-        $this->componentType = $request::componentType();
+        $className = explode('\\', get_called_class());
+        $this->componentType = $request::componentType() . array_pop($className);
         return;
     }
 
