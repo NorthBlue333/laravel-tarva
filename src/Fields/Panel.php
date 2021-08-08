@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelAdmin\Fields;
+namespace LaravelTarva\Fields;
 
-use LaravelAdmin\FieldCollection;
-use LaravelAdmin\Http\Requests\MainRequests\ResourceRequestInterface;
+use LaravelTarva\FieldCollection;
+use LaravelTarva\Http\Requests\MainRequests\Resource\ResourceRequestInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class Panel
@@ -32,7 +32,7 @@ class Panel
         }
     }
 
-    public final function hideTitle() {
+    public final function hideTitle(): self {
         $this->showTitle = false;
         return $this;
     }

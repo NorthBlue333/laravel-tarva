@@ -1,11 +1,11 @@
 <?php
 
-namespace LaravelAdmin\Fields;
+namespace LaravelTarva\Fields;
 
-use LaravelAdmin\Http\Requests\MainRequests\ResourceFormRequest;
-use LaravelAdmin\Http\Requests\MainRequests\ResourceRequestInterface;
-use LaravelAdmin\Http\Requests\ResourceCreatingRequest;
-use LaravelAdmin\Http\Requests\ResourceUpdatingRequest;
+use LaravelTarva\Http\Requests\MainRequests\Resource\ResourceFormRequest;
+use LaravelTarva\Http\Requests\MainRequests\Resource\ResourceRequestInterface;
+use LaravelTarva\Http\Requests\Resource\ResourceCreatingRequest;
+use LaravelTarva\Http\Requests\Resource\ResourceUpdatingRequest;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -128,7 +128,7 @@ class Field
      *
      * @return self
      */
-    public final function componentType(array $typeMapping) {
+    public final function componentType(array $typeMapping): self {
         $this->componentTypeCallback = function (ResourceRequestInterface $request) use ($typeMapping) {
             if (array_key_exists(get_class($request), $typeMapping)) {
                 $this->componentType = $typeMapping[get_class($request)];
@@ -152,7 +152,7 @@ class Field
      *
      * @return self
      */
-    public final function hideFromIndex() {
+    public final function hideFromIndex(): self {
         $this->showOnIndex = false;
         return $this;
     }
@@ -162,7 +162,7 @@ class Field
      *
      * @return self
      */
-    public final function hideFromDetails() {
+    public final function hideFromDetails(): self {
         $this->showOnDetail = false;
         return $this;
     }
@@ -172,7 +172,7 @@ class Field
      *
      * @return self
      */
-    public final function hideWhenCreating() {
+    public final function hideWhenCreating(): self {
         $this->showOnCreate = false;
         return $this;
     }
@@ -182,7 +182,7 @@ class Field
      *
      * @return self
      */
-    public final function hideWhenUpdating() {
+    public final function hideWhenUpdating(): self {
         $this->showOnUpdate = false;
         return $this;
     }
@@ -192,7 +192,7 @@ class Field
      *
      * @return self
      */
-    public final function hideFromForms() {
+    public final function hideFromForms(): self {
         $this->hideWhenCreating();
         $this->hideWhenUpdating();
         return $this;
@@ -203,8 +203,8 @@ class Field
      *
      * @return self
      */
-    public final function disabled() {
-        return $this->mergeMetaData(['diabled' => true]);
+    public final function disabled(): self {
+        return $this->mergeMetaData(['disabled' => true]);
     }
 
     /**
@@ -213,7 +213,7 @@ class Field
      * @param array $rules
      * @return self
      */
-    public final function rules(array $rules) {
+    public final function rules(array $rules): self {
         $this->validationRules = $this->validationRules->merge($rules);
         return $this;
     }
@@ -223,7 +223,7 @@ class Field
      *
      * @return self
      */
-    public final function setComponentTypeCallback($callback) {
+    public final function setComponentTypeCallback($callback): self {
         $this->componentTypeCallback = $callback;
         return $this;
     }
@@ -255,7 +255,7 @@ class Field
         if(is_callable($this->displayCallback)) {
             return call_user_func($this->displayCallback);
         }
-        return in_array($this->value, $this->nullValues) ? '—' : $this->value;
+        return in_array($this->value, $this->nullValues) ? '—' : $this->getSerializableValue();
     }
 
     /**
@@ -297,10 +297,17 @@ class Field
     /**
      * Get field value
      *
-     * @return array
+     * @return mixed
      */
     public final function getValue() {
         return $this->value;
+    }
+
+    /**
+     * Get serialiazable field value
+     */
+    public function getSerializableValue() {
+        return $this->getValue();
     }
 
     /**
@@ -322,7 +329,7 @@ class Field
      * @param array|Illuminate\Support\Collection $newMetadata
      * @return self
      */
-    protected function mergeMetaData($newMetadata) {
+    protected function mergeMetaData($newMetadata): self {
         $this->metadata = $this->metadata->merge($newMetadata)->filter(
             fn ($value, $key) => !in_array($key, ['name', 'class'])
         );
@@ -372,6 +379,57 @@ class Field
             $value = call_user_func($this->sanitizeCallback, $value);
         }
         $model->{$this->attribute} = $value;
+    }
+
+    /**
+     * Serialize field for forms
+     * 
+     * @return array
+     */
+    public function serializeForForms() {
+        return [
+            'isPanel' => false,
+            'component' => $this->getComponentType(),
+            'name' => $this->name,
+            'helper' => $this->helper,
+            'value' => $this->getSerializableValue(),
+            'valueForDisplay' => $this->getValueForDisplay(),
+            'metadata' => $this->getMetadata(),
+            'isRequired' => $this->isRequired(),
+            'attribute' => $this->getAttribute()
+        ];
+    }
+
+    /**
+     * Serialize field for index
+     * 
+     * @return array
+     */
+    public function serializeForIndex() {
+        return [
+            'isPanel' => false,
+            'component' => $this->getComponentType(),
+            'name' => $this->name,
+            'valueForDisplay' => $this->getValueForDisplay()
+        ];
+    }
+
+    /**
+     * Serialize field for details
+     * 
+     * @return array
+     */
+    public function serializeForDetail() {
+        return [
+            'isPanel' => false,
+            'component' => $this->getComponentType(),
+            'name' => $this->name,
+            'helper' => $this->helper,
+            'valueForDisplay' => $this->getValueForDisplay(),
+            'attribute' => $this->getAttribute(),
+            'value' => $this->getSerializableValue(),
+            'valueForDisplay' => $this->getValueForDisplay(),
+        ];
     }
 
     /**

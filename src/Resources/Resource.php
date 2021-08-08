@@ -1,13 +1,13 @@
 <?php
 
-namespace LaravelAdmin\Resources;
+namespace LaravelTarva\Resources;
 
-use LaravelAdmin\Fields\Field;
-use LaravelAdmin\Fields\Panel;
+use LaravelTarva\Fields\Field;
+use LaravelTarva\Fields\Panel;
 use Illuminate\Support\Str;
-use LaravelAdmin\FieldCollection;
+use LaravelTarva\FieldCollection;
 use Illuminate\Database\Eloquent\Model;
-use LaravelAdmin\Http\Requests\MainRequests\ResourceRequestInterface;
+use LaravelTarva\Http\Requests\MainRequests\Resource\ResourceRequestInterface;
 
 class Resource
 {

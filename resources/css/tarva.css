@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
+
+@layer base {
+  html,
+  body {
+    position: relative;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  * {
+    scroll-behavior: smooth;
+  }
+
+  input[type='file'] {
+    @apply invisible w-0;
+  }
+
+  input[type='file'] + label.file-label {
+    @apply bg-tertiary-shadow overflow-hidden py-2 px-3 font-bold text-white rounded-md;
+  }
+
+  input[type='file'] + label.file-label:not(:hover) {
+    @apply opacity-75;
+  }
+
+  input[type='file'] + label.file-label.is-invalid {
+    @apply bg-red;
+  }
+
+  .wysiwyg {
+    @apply rounded-md border border-gray-lighter shadow-sm focus:outline-none;
+  }
+
+  .wysiwyg .wysiwyg-menu {
+    @apply p-2 flex items-center;
+  }
+
+  .wysiwyg .wysiwyg-button {
+    @apply py-2 px-3 rounded shadow bg-gray-100;
+  }
+
+  .wysiwyg .wysiwyg-button:hover {
+    @apply bg-gray-300;
+  }
+
+  .wysiwyg .wysiwyg-button-dropdown {
+    @apply border border-gray-300 rounded shadow bg-gray-100 z-20 absolute top-full left-1/2 transform -translate-x-1/2 overflow-hidden;
+  }
+
+  .wysiwyg .wysiwyg-button-dropdown-item {
+    @apply py-1 px-3;
+  }
+
+  .wysiwyg .wysiwyg-button-dropdown-item:hover {
+    @apply bg-gray-300;
+  }
+
+  .wysiwyg .wysiwyg-button-dropdown-item:not(:first-child) {
+    @apply border-t border-gray-300;
+  }
+
+  .wysiwyg .ProseMirror {
+    @apply px-3 py-2 whitespace-pre-wrap overflow-auto;
+  }
+
+  .wysiwyg .wysiwyg-editor-content ul {
+    padding-inline-start: 20px;
+    @apply list-inside list-disc;
+  }
+
+  .wysiwyg .wysiwyg-editor-content ol {
+    padding-inline-start: 20px;
+    @apply list-inside list-decimal;
+  }
+
+  .wysiwyg .wysiwyg-editor-content ul li > * {
+    @apply inline-flex;
+  }
+
+  .wysiwyg .wysiwyg-editor-content ol li > * {
+    @apply inline-flex;
+  }
+
+  .wysiwyg .ProseMirror:focus,
+  .wysiwyg .ProseMirror:focus-within {
+    @apply outline-none;
+  }
+
+  .wysiwyg .is-active {
+    @apply bg-gray-dark bg-opacity-75 text-ghost-white;
+  }
+
+  input[type='text'],
+  input[type='password'],
+  input[type='email'],
+  input[type='number'],
+  input[type='url'],
+  input[type='date'],
+  input[type='datetime-local'],
+  input[type='month'],
+  input[type='week'],
+  input[type='time'],
+  input[type='search'],
+  input[type='tel'],
+  input[type='checkbox'],
+  input[type='radio'],
+  select,
+  select[multiple],
+  textarea {
+    @apply p-2 rounded-md border border-gray-lighter shadow-sm focus:outline-none;
+  }
+
+  input[type='text'].is-invalid,
+  input[type='password'].is-invalid,
+  input[type='email'].is-invalid,
+  input[type='number'].is-invalid,
+  input[type='url'].is-invalid,
+  input[type='date'].is-invalid,
+  input[type='datetime-local'].is-invalid,
+  input[type='month'].is-invalid,
+  input[type='week'].is-invalid,
+  input[type='time'].is-invalid,
+  input[type='search'].is-invalid,
+  input[type='tel'].is-invalid,
+  input[type='checkbox'].is-invalid,
+  input[type='radio'].is-invalid,
+  select.is-invalid,
+  select[multiple].is-invalid,
+  textarea.is-invalid,
+  .wysiwyg.is-invalid {
+    @apply border-red;
+  }
+
+  input[type='text']:focus,
+  input[type='text']:focus-within,
+  input[type='password']:focus,
+  input[type='password']:focus-within,
+  input[type='email']:focus,
+  input[type='email']:focus-within,
+  input[type='number']:focus,
+  input[type='number']:focus-within,
+  input[type='url']:focus,
+  input[type='url']:focus-within,
+  input[type='date']:focus,
+  input[type='date']:focus-within,
+  input[type='datetime-local']:focus,
+  input[type='datetime-local']:focus-within,
+  input[type='month']:focus,
+  input[type='month']:focus-within,
+  input[type='week']:focus,
+  input[type='week']:focus-within,
+  input[type='time']:focus,
+  input[type='time']:focus-within,
+  input[type='search']:focus,
+  input[type='search']:focus-within,
+  input[type='tel']:focus,
+  input[type='tel']:focus-within,
+  input[type='checkbox']:focus,
+  input[type='checkbox']:focus-within,
+  input[type='radio']:focus,
+  input[type='radio']:focus-within,
+  select:focus,
+  select:focus-within,
+  select[multiple]:focus,
+  select[multiple]:focus-within,
+  textarea:focus,
+  textarea:focus-within,
+  input[type='file']:focus + label.file-label,
+  input[type='file']:focus-within + label.file-label,
+  .wysiwyg:focus,
+  .wysiwyg:focus-within {
+    @apply border-tertiary-light ring ring-tertiary ring-opacity-25;
+  }
+
+  textarea,
+  .wysiwyg .wysiwyg-editor-content {
+    min-height: 4rem;
+    max-height: 25rem;
+  }
+
+  /** wysiwyg-editor-content styles */
+
+  .block-h3 {
+    @apply uppercase text-center font-semibold text-lg;
+  }
+
+  .block-h3:not(:first-child) {
+    @apply mt-8;
+  }
+}

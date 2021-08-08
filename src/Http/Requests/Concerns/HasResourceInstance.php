@@ -1,10 +1,10 @@
 <?php
 
-namespace LaravelAdmin\Http\Requests\Concerns;
+namespace LaravelTarva\Http\Requests\Concerns;
 
 trait HasResourceInstance {
     public function getResourceId() {
-        return $this->route('id');
+        return $this->get('id');
     }
 
     public function getResourceInstance() {

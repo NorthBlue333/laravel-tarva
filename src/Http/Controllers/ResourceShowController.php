@@ -1,12 +1,12 @@
 <?php
 
-namespace LaravelAdmin\Http\Controllers;
+namespace LaravelTarva\Http\Controllers;
 
 use Inertia\Inertia;
-use LaravelAdmin\Fields\Field;
-use LaravelAdmin\Fields\Panel;
-use LaravelAdmin\Http\Requests\ResourceDetailRequest;
-use LaravelAdmin\Utils;
+use LaravelTarva\Fields\Field;
+use LaravelTarva\Fields\Panel;
+use LaravelTarva\Http\Requests\Resource\ResourceDetailRequest;
+use LaravelTarva\Utils;
 
 class ResourceShowController extends Controller
 {
@@ -15,7 +15,7 @@ class ResourceShowController extends Controller
         $resource = Utils::findResource($resource);
         if(!$resource) abort(404);
         $resourceInstance = $resource::forModelOrFail($id, $request);
-        Inertia::setRootView('laravel-admin::layout');
+        Inertia::setRootView('laravel-tarva::layout');
 
         return Inertia::render('Resources/Show', [
             'resource' => [
@@ -34,15 +34,9 @@ class ResourceShowController extends Controller
                     'name' => $panel->name,
                     'showTitle' => $panel->showTitle,
                     'fields' => $panel->getFields()
-                        ->map(fn (Field $field) => [
-                                'isPanel' => false,
-                                'component' => $field->getComponentType(),
-                                'name' => $field->name,
-                                'valueForDisplay' => $field->getValueForDisplay()
-                            ])
+                        ->map(fn (Field $field) => $field->serializeForDetail())
                 ]),
             ],
-        ])
-        ->withViewData('pageTitle', $resourceInstance::singular() . ' ' . $resourceInstance->title());
+        ]);
     }
 }

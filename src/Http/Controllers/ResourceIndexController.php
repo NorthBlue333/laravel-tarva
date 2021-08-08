@@ -1,14 +1,14 @@
 <?php
 
-namespace LaravelAdmin\Http\Controllers;
+namespace LaravelTarva\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Model;
 use Inertia\Inertia;
-use LaravelAdmin\Fields\Field;
-use LaravelAdmin\Fields\Panel;
-use LaravelAdmin\Http\Requests\ResourceIndexRequest;
-use LaravelAdmin\Resources\Resource;
-use LaravelAdmin\Utils;
+use LaravelTarva\Fields\Field;
+use LaravelTarva\Fields\Panel;
+use LaravelTarva\Http\Requests\Resource\ResourceIndexRequest;
+use LaravelTarva\Resources\Resource;
+use LaravelTarva\Utils;
 
 class ResourceIndexController extends Controller
 {
@@ -18,7 +18,7 @@ class ResourceIndexController extends Controller
         /** @todo should return inertia 404 */
         if(!$resourceClass) abort(404);
         $paginator = $resourceClass::$modelClass::simplePaginate($request->getPerPageResource());
-        Inertia::setRootView('laravel-admin::layout');
+        Inertia::setRootView('laravel-tarva::layout');
 
         return Inertia::render('Resources/List', [
             'resource' => [
@@ -38,18 +38,9 @@ class ResourceIndexController extends Controller
                                 ? [
                                     'isPanel' => true,
                                     'name' => $field->name,
-                                    'fields' => $field->getFields()->map(fn (Field $field) => [
-                                            'component' => $field->getComponentType(),
-                                            'name' => $field->name,
-                                            'valueForDisplay' => $field->getValueForDisplay()
-                                        ])
+                                    'fields' => $field->getFields()->map(fn (Field $field) => $field->serializeForIndex())
                                 ]
-                                : [
-                                    'isPanel' => false,
-                                    'component' => $field->getComponentType(),
-                                    'name' => $field->name,
-                                    'valueForDisplay' => $field->getValueForDisplay()
-                                ])
+                                : $field->serializeForIndex())
                     ];
                 }),
             'fields' => $resourceClass::staticFilterFieldsOn($resourceClass::fields(), 'showOnIndex', true)
@@ -74,7 +65,6 @@ class ResourceIndexController extends Controller
             'filters' => $request->getFilters(),
             'filtersOptions' => $request->getFilterOptions(),
             'filtersDefaults' => $request->getFilterDefaults(),
-        ])
-        ->withViewData('pageTitle', $resourceClass::plural());
+        ]);
     }
 }

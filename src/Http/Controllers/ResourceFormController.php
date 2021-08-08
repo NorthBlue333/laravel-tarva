@@ -1,13 +1,13 @@
 <?php
 
-namespace LaravelAdmin\Http\Controllers;
+namespace LaravelTarva\Http\Controllers;
 
 use Inertia\Inertia;
-use LaravelAdmin\Fields\Field;
-use LaravelAdmin\Fields\Panel;
-use LaravelAdmin\Http\Requests\ResourceUpdateRequest;
-use LaravelAdmin\Http\Requests\ResourceUpdatingRequest;
-use LaravelAdmin\Utils;
+use LaravelTarva\Fields\Field;
+use LaravelTarva\Fields\Panel;
+use LaravelTarva\Http\Requests\Resource\ResourceUpdateRequest;
+use LaravelTarva\Http\Requests\Resource\ResourceUpdatingRequest;
+use LaravelTarva\Utils;
 
 class ResourceFormController extends Controller
 {
@@ -16,7 +16,7 @@ class ResourceFormController extends Controller
         $resourceClass = Utils::findResource($resource);
         if(!$resourceClass) abort(404);
         $resourceInstance = $resourceClass::forModelOrFail($id, $request);
-        Inertia::setRootView('laravel-admin::layout');
+        Inertia::setRootView('laravel-tarva::layout');
         return Inertia::render('Resources/Form', [
             'resource' => [
                 'singular' => $resourceInstance::singular(),
@@ -34,19 +34,10 @@ class ResourceFormController extends Controller
                     'name' => $panel->name,
                     'showTitle' => $panel->showTitle,
                     'fields' => $panel->getFields()
-                        ->map(fn (Field $field) => [
-                            'isPanel' => false,
-                            'component' => $field->getComponentType(),
-                            'name' => $field->name,
-                            'valueForDisplay' => $field->getValueForDisplay(),
-                            'metadata' => $field->getMetadata(),
-                            'isRequired' => $field->isRequired(),
-                            'attribute' => $field->getAttribute()
-                        ])
+                        ->map(fn (Field $field) => $field->serializeForForms())
                 ]),
             ],
-        ])
-        ->withViewData('pageTitle', 'Edit ' . $resourceInstance::singular() . ' ' . $resourceInstance->title());
+        ]);
     }
 
     public function update(ResourceUpdateRequest $request, string $resource, string $id)
@@ -55,14 +46,16 @@ class ResourceFormController extends Controller
         if(!$resource) abort(404);
         $resourceInstance = $resource::forModelOrFail($id, $request);
         $resourceInstance->fillValues($request);
-        $redirectRoute = $request->get('__submit-redirect', 'laravel-admin::resources.show');
+        $redirectRoute = $request->get('__submit-redirect', 'laravel-tarva::resources.show');
         return redirect()->route(
             in_array(
                 $redirectRoute,
-                ['laravel-admin::resources.show', 'laravel-admin::resources.edit']
-            ) ? $redirectRoute : 'laravel-admin::resources.show', [
+                ['laravel-tarva::resources.show', 'laravel-tarva::resources.edit']
+            ) ? $redirectRoute : 'laravel-tarva::resources.show', [
             'resource' => $resourceInstance::uriKey(),
             'id' => $resourceInstance->getModel()->getKey()
+        ])->with('laravel-tarva--flash-messages', [
+            'alerts' => [['type' => 'Success', 'title' => 'You have successfully updated this resource']]
         ]);
     }
 }

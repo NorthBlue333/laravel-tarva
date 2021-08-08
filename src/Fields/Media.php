@@ -1,13 +1,13 @@
 <?php
 
-namespace LaravelAdmin\Fields;
+namespace LaravelTarva\Fields;
 
 use Error;
 use Illuminate\Http\UploadedFile;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
-use LaravelAdmin\Http\Requests\MainRequests\ResourceFormRequest;
-use LaravelAdmin\Http\Requests\MainRequests\ResourceRequestInterface;
+use LaravelTarva\Http\Requests\MainRequests\Resource\ResourceFormRequest;
+use LaravelTarva\Http\Requests\MainRequests\Resource\ResourceRequestInterface;
 
 class Media extends Field
 {
@@ -16,7 +16,7 @@ class Media extends Field
     protected bool $isMultiple = false;
     protected bool $withResponsiveImages = false;
 
-    public function __construct($name, $collectionName, $disk = 'media')
+    public function __construct($name, $collectionName, $disk = 'public')
     {
         parent::__construct($name, 'medias-' . $collectionName);
         $this->collectionName = $collectionName;
@@ -29,7 +29,7 @@ class Media extends Field
      *
      * @return self
      */
-    public function multiple() {
+    public function multiple(): self {
         $this->isMultiple = true;
         return $this->mergeMetaData(['multiple' => true]);
     }
@@ -39,7 +39,7 @@ class Media extends Field
      *
      * @return self
      */
-    public function withResponsiveImages() {
+    public function withResponsiveImages(): self {
         $this->withResponsiveImages = true;
         return $this;
     }
@@ -100,9 +100,7 @@ class Media extends Field
             throw new Error('Model does not implement ' . HasMedia::class . ' interface.');
         }
 
-        if($this->isMultiple) {
-            $this->handleFileDeletion($model, $request->get('existing-' . $this->attribute));
-        }
+        $this->handleFileDeletion($model, $request->get('existing-' . $this->attribute));
 
         if(!$request->hasFile($this->attribute)) return;
 
@@ -164,5 +162,17 @@ class Media extends Field
             $addingMedia->withResponsiveImages();
         }
         $addingMedia->toMediaCollection($this->collectionName, $this->disk);
+    }
+
+    /**
+     * Get serializable field value
+     */
+    public function getSerializableValue()
+    {
+        return $this->value->map(fn ($media) => [
+            'fullUrl' => $media->getFullUrl(),
+            'name' => $media->name,
+            'key' => $media->getKey(),
+        ])->values()->all();
     }
 }

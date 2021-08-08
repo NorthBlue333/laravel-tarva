@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelAdmin\Http\Middleware;
+namespace LaravelTarva\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Closure;
@@ -22,7 +22,7 @@ class Authenticate extends Middleware
     {
         $this->authenticate($request, $guards);
 
-        $middleware = config('laravel-admin.auth.middleware');
+        $middleware = config('laravel-tarva.auth.middleware');
 
         if(config($middleware)) {
             try {
@@ -46,7 +46,7 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (!$request->expectsJson()) {
-            return route('laravel-admin::login');
+            return route('laravel-tarva::login');
         }
     }
 }

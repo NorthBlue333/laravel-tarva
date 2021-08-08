@@ -1,7 +1,7 @@
 {
-  "name": "northblue333/laravel-admin",
+  "name": "northblue333/laravel-tarva",
   "type": "project",
-  "description": "Laravel Admin package.",
+  "description": "Laravel Tarva package.",
   "keywords": [
     "framework",
     "laravel"
@@ -16,7 +16,9 @@
     "laravel/tinker": "^2.5",
     "laravel/ui": "^3.0",
     "spatie/laravel-medialibrary": "^9.4",
-    "inertiajs/inertia-laravel": "^0.4.1"
+    "inertiajs/inertia-laravel": "^0.4.4",
+    "tgalopin/html-sanitizer": "^1.4",
+    "tightenco/ziggy": "^1.3"
   },
   "require-dev": {
     "facade/ignition": "^2.3.6",
@@ -32,12 +34,15 @@
   },
   "extra": {
     "laravel": {
-      "dont-discover": []
+      "providers": [
+        "LaravelTarva\\Providers\\TarvaServiceProvider",
+        "LaravelTarva\\Providers\\TarvaRouteServiceProvider"
+      ]
     }
   },
   "autoload": {
     "psr-4": {
-      "LaravelAdmin\\": "src/"
+      "LaravelTarva\\": "src/"
     }
   },
   "minimum-stability": "dev",

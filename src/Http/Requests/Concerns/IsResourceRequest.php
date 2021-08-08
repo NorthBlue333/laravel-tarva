@@ -1,8 +1,8 @@
 <?php
 
-namespace LaravelAdmin\Http\Requests\Concerns;
+namespace LaravelTarva\Http\Requests\Concerns;
 
-use LaravelAdmin\Utils;
+use LaravelTarva\Utils;
 
 trait IsResourceRequest {
     public static function componentType(): string {

@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelAdmin\Fields;
+namespace LaravelTarva\Fields;
 
 class Text extends Field
 {
@@ -16,7 +16,7 @@ class Text extends Field
      * @param string $type
      * @return self
      */
-    public function fieldType(string $type) {
+    public function fieldType(string $type): self {
         return $this->mergeMetaData(['type' => $type]);
     }
 }

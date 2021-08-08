@@ -1,10 +1,10 @@
 <?php
 
-namespace LaravelAdmin;
+namespace LaravelTarva;
 
 use Illuminate\Support\Collection;
-use LaravelAdmin\Fields\Panel;
-use LaravelAdmin\Fields\Field;
+use LaravelTarva\Fields\Panel;
+use LaravelTarva\Fields\Field;
 
 class FieldCollection extends Collection
 {

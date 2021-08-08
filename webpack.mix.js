@@ -12,16 +12,17 @@ const mix = require('laravel-mix')
  |
  */
 
-mix.setPublicPath('assets')
-    .webpackConfig({
-        output: {
-            publicPath: '/vendor/laravel-admin/',
-        },
-    })
-    .ts('resources/js/admin.ts', 'assets/js')
-    .options({
-        processCssUrls: true,
-    })
-    .vue()
-    .postCss('resources/css/admin.css', 'assets/css', [require('tailwindcss')])
-    .version()
+mix
+  .setPublicPath('assets')
+  .webpackConfig({
+    output: {
+      publicPath: '/vendor/laravel-tarva/',
+    },
+  })
+  .ts('resources/js/tarva.ts', 'assets/js')
+  .options({
+    processCssUrls: true,
+  })
+  .vue()
+  .postCss('resources/css/tarva.css', 'assets/css', [require('tailwindcss')])
+  .version()

@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelAdmin\Http\Controllers;
+namespace LaravelTarva\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;

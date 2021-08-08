@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelAdmin\Fields;
+namespace LaravelTarva\Fields;
 
 class Id extends Field
 {
